@@ -10,29 +10,12 @@
 # and classes. See the [startup.coffee](http://sweetpi.de/pimatic/docs/startup.html) for details.
 module.exports = (env) ->
 
-
-  # ###require modules included in pimatic
-  # To require modules that are included in pimatic use `env.require`. For available packages take 
-  # a look at the dependencies section in pimatics package.json
-
-  # Require [convict](https://github.com/mozilla/node-convict) for config validation.
-  convict = env.require "convict"
-
-  # Require the [Q](https://github.com/kriskowal/q) promise library
+  convict = env.require 'convict'
   Q = env.require 'q'
-
-  # Require the [cassert library](https://github.com/rhoot/cassert).
   assert = env.require 'cassert'
-
-  # Include you own depencies with nodes global require function:
-  #  
-  #     someThing = require 'someThing'
-  #
   EverSocket = require('eversocket').EverSocket
   AD2USB = require 'ad2usb'
 
-  # ###MyPlugin class
-  # Create a class that extends the Plugin class and implements the following functions:
   class AD2USBPlugin extends env.plugins.Plugin
 
   # ####init()
@@ -46,11 +29,25 @@ module.exports = (env) ->
   #
   #
     init: (app, @framework, config) =>
+
       # Require your config schema
       @conf = convict require('./ad2usb-config-schema')
       # and validate the given config.
       @conf.load(config)
       @conf.validate()
+
+      # wait till all plugins are loaded
+      @framework.on "after init", =>
+
+        # Check if the mobile-frontent was loaded and get a instance
+        mobileFrontend = @framework.getPlugin 'mobile-frontend'
+        if mobileFrontend?
+
+          mobileFrontend.registerAssetFile 'js', "pimatic-ad2usb/app/alarm-device-item.coffee"
+          #mobileFrontend.registerAssetFile 'css', "pimatic-your-plugin/app/css/some-css.css"
+          mobileFrontend.registerAssetFile 'html', "pimatic-ad2usb/app/alarm-device-item-template.html"
+        else
+          env.logger.warn "The pimatic-ad2usb plugin could not find the mobile-frontend. No gui will be available"
 
 
     createDevice: (deviceConfig) =>
@@ -68,6 +65,9 @@ module.exports = (env) ->
 
   class AD2USBAdapter extends env.devices.Device
     _state: undefined
+
+    getTemplateName: ->
+      "AlarmDeviceItem"
 
     constructor: (deviceConfig) ->
       @name = deviceConfig.name
@@ -132,6 +132,7 @@ module.exports = (env) ->
     disarm: ->
       env.logger.info 'disarm'
       Q.ninvoke @panel, 'disarm', @_code
+
 
   class AD2USBWirelessZone extends env.devices.ContactSensor
     constructor: (deviceConfig) ->
