@@ -44,7 +44,7 @@ module.exports = (env) ->
         if mobileFrontend?
 
           mobileFrontend.registerAssetFile 'js', "pimatic-ad2usb/app/alarm-device-item.coffee"
-          #mobileFrontend.registerAssetFile 'css', "pimatic-your-plugin/app/css/some-css.css"
+          mobileFrontend.registerAssetFile 'css', "pimatic-ad2usb/app/alarm-device-item.css"
           mobileFrontend.registerAssetFile 'html', "pimatic-ad2usb/app/alarm-device-item-template.html"
         else
           env.logger.warn "The pimatic-ad2usb plugin could not find the mobile-frontend. No gui will be available"

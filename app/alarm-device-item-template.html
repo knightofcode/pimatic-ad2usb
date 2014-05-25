@@ -1,10 +1,18 @@
 <script id="AlarmDeviceItem-template" type="text/template">
-    <li class="sortable device no-header">
-        Alarm!
-        <!--<label data-bind="text: name" class="device-label"></label> -->
-        <label data-bind="text: this" class="device-label"></label>
-        <!--
-        <a data-bind="click: onButtonPress" class="ui-btn ui-mini ui-btn-inline ui-corner-all">click me</a>
-        -->
+    <li class="sortable alarm no-header item ui-li-static ui-body-inherit">
+        <label>
+            <span data-bind="text: name" class="name"></span>
+
+            <div class="controls">
+                <span data-bind="text: state" class="state"></span>
+                <div class="ui-controlgroup ui-controlgroup-horizontal ui-corner-all">
+                    <div class="ui-controlgroup-controls ">
+                        <a href="#" class="ui-btn ui-mini ui-corner-all ui-first-child" data-bind="click: armStay">Stay</a>
+                        <a href="#" class="ui-btn ui-mini ui-corner-all" data-bind="click: armAway">Away</a>
+                        <a href="#" class="ui-btn ui-mini ui-corner-all ui-last-child" data-bind="click: disarm">Disarm</a>
+                    </div>
+                </div>
+            </div>
+        </label>
     </li>
 </script>

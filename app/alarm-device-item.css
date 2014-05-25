@@ -1,0 +1,17 @@
+#index li.alarm .controls {
+    margin: 3px 10px 0px 0 !important;
+    position: absolute;
+    right: 0;
+    top: 0;
+    white-space: nowrap;
+}
+
+#index li.alarm .controls .ui-controlgroup {
+    display:inline;
+}
+
+#index li.alarm .controls .state {
+    padding-right:10px;
+    font-size:smaller
+}
+
