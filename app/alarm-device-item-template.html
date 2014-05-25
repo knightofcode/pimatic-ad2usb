@@ -4,14 +4,34 @@
             <span data-bind="text: name" class="name"></span>
 
             <div class="controls">
-                <span data-bind="text: state" class="state"></span>
-                <div class="ui-controlgroup ui-controlgroup-horizontal ui-corner-all">
+                <fieldset class="ui-controlgroup ui-controlgroup-horizontal ui-mini ui-corner-all">
+
+
                     <div class="ui-controlgroup-controls ">
-                        <a href="#" class="ui-btn ui-mini ui-corner-all ui-first-child" data-bind="click: armStay">Stay</a>
-                        <a href="#" class="ui-btn ui-mini ui-corner-all" data-bind="click: armAway">Away</a>
-                        <a href="#" class="ui-btn ui-mini ui-corner-all ui-last-child" data-bind="click: disarm">Disarm</a>
+                        <div class="ui-radio">
+                            <label for="radio-view-away"
+                                   class="ui-btn ui-mini ui-corner-all ui-btn-inherit ui-first-child"
+                                   data-bind="css: { 'ui-btn-active': isArmedAway() }">Away</label>
+                            <input type="radio" name="radio-view" id="radio-view-away"
+                                   data-bind="click: armAway">
+                        </div>
+                        <div class="ui-radio">
+                            <label for="radio-view-stay"
+                                   class="ui-btn ui-mini ui-corner-all ui-btn-inherit"
+                                   data-bind="css: { 'ui-btn-active': isArmedStay() }">Stay</label>
+                            <input type="radio" name="radio-view" id="radio-view-stay"
+                                   data-bind="click: armStay">
+                        </div>
+                        <div class="ui-radio">
+                            <label for="radio-view-disarm"
+                                   class="ui-btn ui-mini ui-corner-all ui-btn-inherit ui-last-child"
+                                   data-bind="css: { 'ui-btn-active': isDisarmed() }">Disarm</label>
+                            <input type="radio" name="radio-view" id="radio-view-disarm"
+                                   data-bind="click: disarm">
+                        </div>
+
                     </div>
-                </div>
+                </fieldset>
             </div>
         </label>
     </li>

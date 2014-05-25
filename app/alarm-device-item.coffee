@@ -1,15 +1,20 @@
-$(document).on( "templateinit", (event) ->
+$(document).on("templateinit", (event) ->
   console.log("Loaded AlarmDeviceItem")
 
   class AlarmDeviceItem extends pimatic.DeviceItem
 
-    state: ko.observable()
+
 
     constructor: (data) ->
       super(data)
-      state = @getAttribute('state')
-      @state(state.value())
-      state.value.subscribe( (value) =>
+      @state = ko.observable()
+      @isArmedStay = ko.computed(=> @state() == 'armed stay')
+      @isArmedAway = ko.computed(=> @state() == 'armed away')
+      @isDisarmed = ko.computed(=> @state() == 'disarmed')
+
+      @state(@getAttribute('state').value())
+
+      @getAttribute('state').value.subscribe((value) =>
         console.log(value)
         @state(value)
       )
@@ -17,19 +22,19 @@ $(document).on( "templateinit", (event) ->
     armStay: ->
       console.log("stay")
       $.ajax(
-        url:"/api/device/#{@deviceId}/stay"
+        url: "/api/device/#{@deviceId}/stay"
       ).fail(ajaxAlertFail)
 
     armAway: ->
       console.log("away")
       $.ajax(
-        url:"/api/device/#{@deviceId}/away"
+        url: "/api/device/#{@deviceId}/away"
       ).fail(ajaxAlertFail)
 
     disarm: ->
       console.log("disarm")
       $.ajax(
-        url:"/api/device/#{@deviceId}/disarm"
+        url: "/api/device/#{@deviceId}/disarm"
       ).fail(ajaxAlertFail)
 
   pimatic.templateClasses['AlarmDeviceItem'] = AlarmDeviceItem
