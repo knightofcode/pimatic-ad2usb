@@ -8,20 +8,22 @@
   "files": [
     "ad2usb.coffee",
     "README.md",
-    "ad2usb-config-schema.coffee"
+    "ad2usb-config-schema.coffee",
+    "device-config-schema.coffee"
   ],
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "repository": {
     "type": "git",
     "url": "git://github.com/knightofcode/pimatic-ad2usb.git"
   },
+  "configSchema": "ad2usb-config-schema.coffee",
   "dependencies": {
     "eversocket": "0.0.x",
     "ad2usb": "0.0.x"
   },
   "peerDependencies": {
-    "pimatic": "0.7.*"
+    "pimatic": "0.8.*"
   },
   "engines": {
     "node": ">0.8.x",
