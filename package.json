@@ -1,6 +1,9 @@
 { "name": "pimatic-ad2usb",
   "description": "Pimatic plugin for the AD2USB Ademco/Honeywell alarm adapter",
   "author": "Alex Wolfe <alexkwolfe@gmail.com> (https://github.com/alexkwolfe)",
+  "contributors": [
+    "Knight of Code (https://github.com/knightofcode)"
+  ],
   "main": "ad2usb",
   "files": [
     "ad2usb.coffee",
@@ -11,7 +14,7 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "git://github.com/alexkwolfe/pimatic-ad2usb.git"
+    "url": "git://github.com/knightofcode/pimatic-ad2usb.git"
   },
   "dependencies": {
     "eversocket": "0.0.x",
