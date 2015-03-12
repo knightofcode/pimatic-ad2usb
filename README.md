@@ -23,7 +23,7 @@ Example configuration:
       "id": "front-door",
       "name": "Front Door",
       "class": "AD2USBWirelessZone",
-      "ad2usbId": "alarm",
+      "alarmId": "alarm",
       "serial": "0123456",
       "loop": 2
     }
