@@ -20,7 +20,7 @@
   "configSchema": "ad2usb-config-schema.coffee",
   "dependencies": {
     "eversocket": "0.0.x",
-    "ad2usb": "0.0.x"
+    "ad2usb": "1.0.x
   },
   "peerDependencies": {
     "pimatic": "0.8.*"
