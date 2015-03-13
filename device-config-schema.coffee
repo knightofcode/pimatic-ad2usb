@@ -5,10 +5,10 @@ module.exports = {
     type: "object"
     properties:
       host:
-        description: "the host where ser2sock is running"
+        description: "the host where the serial-to-IP bridge is running"
         type: "string"
       port:
-        description: "the port where ser2sock is running"
+        description: "the port where the serial-to-IP bridge is running"
         type: "number"
       code:
         description: "the code to arm and disarm the system"
@@ -19,7 +19,7 @@ module.exports = {
     type: "object"
     properties:
       alarmId:
-        description: "the id of the alarm"
+        description: "the id of the alarm that monitors the sensor"
         type: "string"
       serial:
         description: "the serial number of the sensor"

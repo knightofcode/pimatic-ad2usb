@@ -1,8 +1,8 @@
 pimatic AD2USB alarm adapter plugin
 =======================
 
-Plugin for interacting with the [AD2USB](http://www.alarmdecoder.com/catalog/product_info.php/cPath/1/products_id/29) Ademco/Honeywell serial adapter. This plugin assumes you have
-your adapter connected to the local network using a serial-to-ethernet bridge.
+Plugin for interacting with devices from the [AD2*](http://www.alarmdecoder.com/catalog/index.php/cPath/1) family of Ademco/Honeywell alarm adapters. This plugin assumes you have
+your adapter connected to the local network using a serial-to-IP bridge such as [ser2sock](https://github.com/nutechsoftware/ser2sock).
 
 Example configuration:
 ----------------------
