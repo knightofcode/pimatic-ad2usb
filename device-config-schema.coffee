@@ -1,7 +1,7 @@
 module.exports = {
   title: "pimatic-ad2usb device config schemas"
-  AD2USBAdapter: {
-    title: "AD2USBAdapter config options"
+  AD2USBAlarm: {
+    title: "AD2USBAlarm config options"
     type: "object"
     properties:
       host:
@@ -14,8 +14,8 @@ module.exports = {
         description: "the code to arm and disarm the system"
         type: "number"
   }
-  AD2USBWirelessZone: {
-    title: "AD2USBWirelessZone config options"
+  AD2USBWirelessSensor: {
+    title: "AD2USBWirelessSensor config options"
     type: "object"
     properties:
       alarmId:

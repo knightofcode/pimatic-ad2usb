@@ -12,22 +12,22 @@ module.exports = (env) ->
     init: (app, @framework, @config) =>
       deviceConfigDef = require("./device-config-schema")
 
-      @framework.deviceManager.registerDeviceClass("AD2USBAdapter", {
-        configDef: deviceConfigDef.AD2USBAdapter, 
-        createCallback: (config) => return new AD2USBAdapter(config)
+      @framework.deviceManager.registerDeviceClass("AD2USBAlarm", {
+        configDef: deviceConfigDef.AD2USBAlarm,
+        createCallback: (config) => return new AD2USBAlarm(config)
       })
 
-      @framework.deviceManager.registerDeviceClass("AD2USBWirelessZone", {
-        configDef: deviceConfigDef.AD2USBWirelessZone, 
-        createCallback: (config) => return new AD2USBWirelessZone(config)
+      @framework.deviceManager.registerDeviceClass("AD2USBWirelessSensor", {
+        configDef: deviceConfigDef.AD2USBWirelessSensor,
+        createCallback: (config) => return new AD2USBWirelessSensor(config)
       })
-    
+
     getAlarmById: (alarmId) =>
       return @framework.deviceManager.getDeviceById(alarmId)
 
   plugin = new AD2USBPlugin
 
-  class AD2USBAdapter extends env.devices.Device
+  class AD2USBAlarm extends env.devices.Device
     _state: undefined
 
     constructor: (@config) ->
@@ -45,10 +45,15 @@ module.exports = (env) ->
 
       @panel = new AD2USB socket
 
+      @panel.on 'ready', =>
+        env.logger.info("#{@name} ready")
+        @_state = 'ready'
+        @emit 'state', 'ready'
+
       @panel.on 'disarmed', =>
         env.logger.info("#{@name} disarmed")
-        @_state = 'disarmed'
-        @emit 'state', 'disarmed'
+        @_state = 'ready'
+        @emit 'state', 'ready'
 
       @panel.on 'armedStay', =>
         env.logger.info("#{@name} armed in stay mode")
@@ -97,19 +102,18 @@ module.exports = (env) ->
       Promise.fromNode (callback) =>
         @panel.disarm @_code, callback
 
-  class AD2USBWirelessZone extends env.devices.ContactSensor
+  class AD2USBWirelessSensor extends env.devices.ContactSensor
     constructor: (@config) ->
       @name = config.name
       @id = config.id
-      @_ad2usb = plugin.getAlarmById(config.alarmId)
-      @_ad2usb.panel.on "loop:#{config.serial}:#{config.loop}", (closed) =>
+      @_alarm = plugin.getAlarmById(config.alarmId)
+      @_alarm.panel.on "loop:#{config.serial}:#{config.loop}", (closed) =>
         @_setContact(closed)
-        state = if closed then 'closed' else 'opened'
-        env.logger.info("#{@name} is #{state}")
+        env.logger.info("#{@name} is #{if closed then 'closed' else 'opened'}")
 
       super()
 
-  plugin.AD2USBAdapter = AD2USBAdapter
-  plugin.AD2USBWirelessZone = AD2USBWirelessZone
+  plugin.AD2USBAlarm = AD2USBAlarm
+  plugin.AD2USBWirelessSensor = AD2USBWirelessSensor
 
   return plugin

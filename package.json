@@ -15,18 +15,17 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "git://github.com/knightofcode/pimatic-ad2usb.git"
+    "url": "https://github.com/knightofcode/pimatic-ad2usb.git"
   },
   "configSchema": "ad2usb-config-schema.coffee",
   "dependencies": {
     "eversocket": "0.0.x",
-    "ad2usb": "1.0.x"
+    "ad2usb": "1.1.x"
   },
   "peerDependencies": {
-    "pimatic": "0.8.*"
+    "pimatic": "0.8.x"
   },
   "engines": {
-    "node": ">0.8.x",
-    "npm": ">1.1.x"
+    "node": ">= 0.10.0"
   }
 }

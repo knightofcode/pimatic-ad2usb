@@ -14,7 +14,7 @@ Example configuration:
     {
       "id": "alarm",
       "name": "Alarm",
-      "class": "AD2USBAdapter",
+      "class": "AD2USBAlarm",
       "host": "192.168.5.199",
       "port": "4999",
       "code": "1234"
@@ -22,7 +22,7 @@ Example configuration:
     {
       "id": "front-door",
       "name": "Front Door",
-      "class": "AD2USBWirelessZone",
+      "class": "AD2USBWirelessSensor",
       "alarmId": "alarm",
       "serial": "0123456",
       "loop": 2
