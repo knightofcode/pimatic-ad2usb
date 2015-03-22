@@ -11,7 +11,7 @@
     "ad2usb-config-schema.coffee",
     "device-config-schema.coffee"
   ],
-  "version": "0.0.2",
+  "version": "0.1.0-alpha",
   "private": true,
   "repository": {
     "type": "git",
@@ -19,13 +19,13 @@
   },
   "configSchema": "ad2usb-config-schema.coffee",
   "dependencies": {
-    "eversocket": "0.0.x",
-    "ad2usb": "1.1.x"
+    "eversocket": "~0.0.4",
+    "ad2usb": "^2.0.0-alpha"
   },
   "peerDependencies": {
     "pimatic": "0.8.x"
   },
   "engines": {
-    "node": ">= 0.10.0"
+    "node": "~0.12.0"
   }
 }
