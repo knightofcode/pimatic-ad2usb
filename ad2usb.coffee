@@ -52,8 +52,8 @@ module.exports = (env) ->
 
       @panel.on 'disarmed', =>
         env.logger.info("#{@name} disarmed")
-        @_state = 'ready'
-        @emit 'state', 'ready'
+        @_state = 'disarmed'
+        @emit 'state', 'disarmed'
 
       @panel.on 'armedStay', =>
         env.logger.info("#{@name} armed in stay mode")
