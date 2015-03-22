@@ -22,6 +22,20 @@ module.exports = (env) ->
         createCallback: (config) => return new AD2USBWirelessSensor(config)
       })
 
+      @framework.deviceManager.registerDeviceClass("AD2USBAlarmKeypad", {
+        configDef: deviceConfigDef.AD2USBAlarmKeypad,
+        createCallback: (config) => return new AD2USBAlarmKeypad(config)
+      })
+
+      @framework.on "after init", =>
+        mobileFrontend = @framework.pluginManager.getPlugin 'mobile-frontend'
+        if mobileFrontend?
+          mobileFrontend.registerAssetFile 'js', "pimatic-ad2usb/app/alarm-keypad-item.coffee"
+          # mobileFrontend.registerAssetFile 'css', "pimatic-ad2usb/app/alarm-keypad.css"
+          mobileFrontend.registerAssetFile 'html', "pimatic-ad2usb/app/alarm-keypad-item.jade"
+        else
+          env.logger.warn "AD2USBPlugin could not find the mobile-frontend. No gui will be available"
+
     getAlarmById: (alarmId) =>
       return @framework.deviceManager.getDeviceById(alarmId)
 
@@ -113,7 +127,24 @@ module.exports = (env) ->
 
       super()
 
+  KEYPAD_KEYS = [ 'A', '1', '2', '3',
+                  'B', '4', '5', '6',
+                  'C', '7', '8', '9',
+                  'D', '*', '0', '#' ]
+
+  class AD2USBAlarmKeypad extends env.devices.ButtonsDevice
+
+    template: "alarm-keypad"
+
+    constructor: (config) ->
+      @_alarm = plugin.getAlarmById(config.alarmId)
+      configDefaults = { buttons: ({ id: key, text: key } for key in KEYPAD_KEYS) }
+      configDefaults.__proto__ = config.__proto__
+      config.__proto__ = configDefaults
+      super(config)
+
   plugin.AD2USBAlarm = AD2USBAlarm
   plugin.AD2USBWirelessSensor = AD2USBWirelessSensor
+  plugin.AD2USBAlarmKeypad = AD2USBAlarmKeypad
 
   return plugin

@@ -1,0 +1,6 @@
+script#alarm-keypad-template(type='text/template')
+  li.sortable.button.no-header
+    label.device-label(data-bind="text: name, tooltip: $data.labelTooltipHtml")
+    div.buttons.ui-grid-c(data-bind="foreach: $data.device.configWithDefaults().buttons")
+      div(data-bind="attr: {class: 'ui-block-'+['a','b','c','d'][$index()%4]}")
+        a.ui-btn.ui-mini.ui-btn-inline.ui-corner-all(data-bind="jqmbutton: {text: $data.text}, click: $parent.onButtonPress")

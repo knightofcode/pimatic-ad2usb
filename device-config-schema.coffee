@@ -28,4 +28,12 @@ module.exports = {
         description: "the loop of the sensor"
         type: "number"
   }
+  AD2USBAlarmKeypad: {
+    title: "AD2USBAlarmKeypad config options"
+    type: "object"
+    properties:
+      alarmId:
+        description: "the id of the alarm that the keypad controls"
+        type: "string"
+  }
 }
