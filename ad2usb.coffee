@@ -127,10 +127,13 @@ module.exports = (env) ->
 
       super()
 
-  KEYPAD_KEYS = [ 'A', '1', '2', '3',
-                  'B', '4', '5', '6',
-                  'C', '7', '8', '9',
-                  'D', '*', '0', '#' ]
+  KEYPAD_KEYS = [
+    'OFF', 'AWAY', 'STAY', 'NIGHT',
+    'A',   '1',    '2',    '3',
+    'B',   '4',    '5',    '6',
+    'C',   '7',    '8',    '9',
+    'D',   '*',    '0',    '#',
+  ]
 
   class AD2USBAlarmKeypad extends env.devices.ButtonsDevice
 
@@ -141,7 +144,25 @@ module.exports = (env) ->
       configDefaults = { buttons: ({ id: key, text: key } for key in KEYPAD_KEYS) }
       configDefaults.__proto__ = config.__proto__
       config.__proto__ = configDefaults
+
       super(config)
+
+      @on 'button', (buttonId) =>
+        if !isNaN(buttonId) or buttonId == '*' or buttonId == '#'
+          keycode = buttonId
+        else
+          switch buttonId
+            when 'OFF' then keycode = '1'
+            when 'AWAY' then keycode = '2'
+            when 'STAY' then keycode = '3'
+            when 'NIGHT' then keycode = '33'
+            when 'A' then keycode = "\u0001\u0001\u0001"
+            when 'B' then keycode = "\u0002\u0002\u0002"
+            when 'C' then keycode = "\u0003\u0003\u0003"
+            when 'D' then keycode = "\u0004\u0004\u0004"
+        if keycode != null
+          @_alarm.panel.send keycode
+
 
   plugin.AD2USBAlarm = AD2USBAlarm
   plugin.AD2USBWirelessSensor = AD2USBWirelessSensor
