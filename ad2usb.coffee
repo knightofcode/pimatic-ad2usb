@@ -31,7 +31,7 @@ module.exports = (env) ->
         mobileFrontend = @framework.pluginManager.getPlugin 'mobile-frontend'
         if mobileFrontend?
           mobileFrontend.registerAssetFile 'js', "pimatic-ad2usb/app/alarm-keypad-item.coffee"
-          # mobileFrontend.registerAssetFile 'css', "pimatic-ad2usb/app/alarm-keypad.css"
+          mobileFrontend.registerAssetFile 'css', "pimatic-ad2usb/app/alarm-keypad-item.css"
           mobileFrontend.registerAssetFile 'html', "pimatic-ad2usb/app/alarm-keypad-item.jade"
         else
           env.logger.warn "AD2USBPlugin could not find the mobile-frontend. No gui will be available"
