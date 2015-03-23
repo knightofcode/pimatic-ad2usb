@@ -148,18 +148,19 @@ module.exports = (env) ->
       super(config)
 
       @on 'button', (buttonId) =>
-        if !isNaN(buttonId) or buttonId == '*' or buttonId == '#'
-          keycode = buttonId
-        else
-          switch buttonId
-            when 'OFF' then keycode = '1'
-            when 'AWAY' then keycode = '2'
-            when 'STAY' then keycode = '3'
-            when 'NIGHT' then keycode = '33'
-            when 'A' then keycode = "\u0001\u0001\u0001"
-            when 'B' then keycode = "\u0002\u0002\u0002"
-            when 'C' then keycode = "\u0003\u0003\u0003"
-            when 'D' then keycode = "\u0004\u0004\u0004"
+        keycode = switch
+          when !isNaN(buttonId)    then buttonId
+          when buttonId == '*'     then '*'
+          when buttonId == '#'     then '#'
+          when buttonId == 'OFF'   then '1'
+          when buttonId == 'AWAY'  then '2'
+          when buttonId == 'STAY'  then '3'
+          when buttonId == 'NIGHT' then '33'
+          when buttonId == 'A'     then "\u0001\u0001\u0001"
+          when buttonId == 'B'     then "\u0002\u0002\u0002"
+          when buttonId == 'C'     then "\u0003\u0003\u0003"
+          when buttonId == 'D'     then "\u0004\u0004\u0004"
+          else null
         if keycode != null
           @_alarm.panel.send keycode
 
