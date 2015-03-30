@@ -30,9 +30,12 @@ module.exports = (env) ->
       @framework.on "after init", =>
         mobileFrontend = @framework.pluginManager.getPlugin 'mobile-frontend'
         if mobileFrontend?
-          mobileFrontend.registerAssetFile 'js', "pimatic-ad2usb/app/alarm-keypad-item.coffee"
-          mobileFrontend.registerAssetFile 'css', "pimatic-ad2usb/app/alarm-keypad-item.css"
-          mobileFrontend.registerAssetFile 'html', "pimatic-ad2usb/app/alarm-keypad-item.jade"
+          mobileFrontend.registerAssetFile 'js', "pimatic-ad2usb/app/alarm-item.coffee"
+          mobileFrontend.registerAssetFile 'css', "pimatic-ad2usb/app/alarm-item.css"
+          mobileFrontend.registerAssetFile 'html', "pimatic-ad2usb/app/alarm-item.jade"
+          mobileFrontend.registerAssetFile 'js', "pimatic-ad2usb/app/alarm-keypad-page.coffee"
+          mobileFrontend.registerAssetFile 'css', "pimatic-ad2usb/app/alarm-keypad-page.css"
+          mobileFrontend.registerAssetFile 'html', "pimatic-ad2usb/app/alarm-keypad-page.jade"
         else
           env.logger.warn "AD2USBPlugin could not find the mobile-frontend. No gui will be available"
 
@@ -42,7 +45,10 @@ module.exports = (env) ->
   plugin = new AD2USBPlugin
 
   class AD2USBAlarm extends env.devices.Device
+
     _state: undefined
+
+    template: 'alarm'
 
     constructor: (@config) ->
       @name = config.name
@@ -82,6 +88,27 @@ module.exports = (env) ->
       @panel.on 'beep', (beeps) =>
         @emit 'beep', beeps
 
+      @panel.on 'message:1', (msg) =>
+        @emit 'messageLine1', msg
+
+      @panel.on 'message:2', (msg) =>
+        @emit 'messageLine2', msg
+
+      @panel.on 'backlight', (backlight) =>
+        @emit 'backlight', backlight
+
+      KEYPAD_KEYS = [
+        'OFF', 'AWAY', 'STAY', 'NIGHT',
+        'A',   '1',    '2',    '3',
+        'B',   '4',    '5',    '6',
+        'C',   '7',    '8',    '9',
+        'D',   '*',    '0',    '#',
+      ]
+
+      configDefaults = { buttons: ({ id: key, text: key } for key in KEYPAD_KEYS) }
+      configDefaults.__proto__ = config.__proto__
+      config.__proto__ = configDefaults
+
       super()
 
     attributes:
@@ -89,6 +116,15 @@ module.exports = (env) ->
         description: 'alarm arming status'
         type: 'string'
         enum: ['ready', 'disarmed', 'armed away', 'armed stay']
+      messageLine1:
+        description: 'message line 1'
+        type: 'string'
+      messageLine2:
+        description: 'message line 2'
+        type: 'string'
+      backlight:
+        description: 'backlight'
+        type: 'boolean'
 
     actions:
       away:
@@ -97,9 +133,24 @@ module.exports = (env) ->
         description: 'arms the alarm in stay mode'
       disarm:
         description: 'disarms the alarm'
+      buttonPress:
+        description: 'presses a keypad button'
+        params:
+          buttonId:
+            type: 'string'
+
 
     getState: ->
       Promise.resolve @_state
+
+    getMessageLine1: ->
+      Promise.resolve @panel['message:1']
+
+    getMessageLine2: ->
+      Promise.resolve @panel['message:2']
+
+    getBacklight: ->
+      Promise.resolve @panel['backlight']
 
     away: ->
       env.logger.info 'away'
@@ -116,6 +167,23 @@ module.exports = (env) ->
       Promise.fromNode (callback) =>
         @panel.disarm @_code, callback
 
+    buttonPress: (buttonId) ->
+      keycode = switch
+        when !isNaN(buttonId)    then buttonId
+        when buttonId == '*'     then '*'
+        when buttonId == '#'     then '#'
+        when buttonId == 'OFF'   then '1'
+        when buttonId == 'AWAY'  then '2'
+        when buttonId == 'STAY'  then '3'
+        when buttonId == 'NIGHT' then '33'
+        when buttonId == 'A'     then "\u0001\u0001\u0001"
+        when buttonId == 'B'     then "\u0002\u0002\u0002"
+        when buttonId == 'C'     then "\u0003\u0003\u0003"
+        when buttonId == 'D'     then "\u0004\u0004\u0004"
+        else null
+      if keycode != null
+        @panel.send keycode
+
   class AD2USBWirelessSensor extends env.devices.ContactSensor
     constructor: (@config) ->
       @name = config.name
@@ -127,46 +195,7 @@ module.exports = (env) ->
 
       super()
 
-  KEYPAD_KEYS = [
-    'OFF', 'AWAY', 'STAY', 'NIGHT',
-    'A',   '1',    '2',    '3',
-    'B',   '4',    '5',    '6',
-    'C',   '7',    '8',    '9',
-    'D',   '*',    '0',    '#',
-  ]
-
-  class AD2USBAlarmKeypad extends env.devices.ButtonsDevice
-
-    template: "alarm-keypad"
-
-    constructor: (config) ->
-      @_alarm = plugin.getAlarmById(config.alarmId)
-      configDefaults = { buttons: ({ id: key, text: key } for key in KEYPAD_KEYS) }
-      configDefaults.__proto__ = config.__proto__
-      config.__proto__ = configDefaults
-
-      super(config)
-
-      @on 'button', (buttonId) =>
-        keycode = switch
-          when !isNaN(buttonId)    then buttonId
-          when buttonId == '*'     then '*'
-          when buttonId == '#'     then '#'
-          when buttonId == 'OFF'   then '1'
-          when buttonId == 'AWAY'  then '2'
-          when buttonId == 'STAY'  then '3'
-          when buttonId == 'NIGHT' then '33'
-          when buttonId == 'A'     then "\u0001\u0001\u0001"
-          when buttonId == 'B'     then "\u0002\u0002\u0002"
-          when buttonId == 'C'     then "\u0003\u0003\u0003"
-          when buttonId == 'D'     then "\u0004\u0004\u0004"
-          else null
-        if keycode != null
-          @_alarm.panel.send keycode
-
-
   plugin.AD2USBAlarm = AD2USBAlarm
   plugin.AD2USBWirelessSensor = AD2USBWirelessSensor
-  plugin.AD2USBAlarmKeypad = AD2USBAlarmKeypad
 
   return plugin

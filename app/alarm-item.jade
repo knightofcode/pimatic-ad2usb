@@ -1,0 +1,10 @@
+script#alarm-template(type='text/template')
+  li.sortable.device.alarm.no-header
+    label.device-label(data-bind="text: name, tooltip: $data.labelTooltipHtml")
+    | 
+    span.error(data-bind="text: ($data.error() ? $data.error() : '') ")
+    | 
+    span.attributes.contains-attr-state.contains-attr-message.contains-attr-type-string(data-bind="click: $data.onShowPress")
+      span.attribute.attr-message.attr-type-string
+        span.val(data-bind="text: $data.stateDisplayValueText")
+      span(data-bind="attr: { class: 'attribute attr-state ' + $data.stateClass() }")

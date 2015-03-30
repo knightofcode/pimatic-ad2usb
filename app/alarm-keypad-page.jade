@@ -1,0 +1,13 @@
+div#alarm-keypad(data-role='page')
+  div(data-theme=theme.headerSwatch, data-role='header')
+    a(href='#index', data-role='button', data-icon='arrow-l', data-iconpos='left', 
+      data-inline='true', data-transition="slide", data-direction="reverse")=__('Back')
+    h3=__('Alarm Keypad')
+  div.ui-content.overthrow
+    div.alarm-keypad
+      div(data-bind="attr: { class: 'alarm-keypad-display ' + $data.backlightClass() }")
+        div.alarm-keypad-message(data-bind="text: $data.messageLine1")
+        div.alarm-keypad-message(data-bind="text: $data.messageLine2")
+      div.buttons.ui-grid-c(data-bind="foreach: $data.buttons")
+        div(data-bind="attr: {class: 'ui-block-'+['a','b','c','d'][$index()%4]}")
+          a.alarm-keypad-button.ui-btn.ui-mini.ui-btn-inline.ui-corner-all(data-bind="jqmbutton: {text: $data.text}, click: $parent.onButtonPress")

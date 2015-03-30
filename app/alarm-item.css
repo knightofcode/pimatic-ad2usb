@@ -1,0 +1,19 @@
+#index li.device.alarm span.contains-attr-state span.attr-state {
+  display: inline-block;
+  border-radius: 20px;
+  width: 14px;
+  height: 14px;
+  margin-bottom: -5px;
+}
+#index li.device.alarm span.contains-attr-state span.attr-state.disarmed-state {
+  border: 3px solid #007dcd;
+  background: #007dcd;
+}
+#index li.device.alarm span.contains-attr-state span.attr-state.ready-state {
+  border: 3px solid #7dcd00;
+  background: #7dcd00;
+}
+#index li.device.alarm span.contains-attr-state span.attr-state.armed-state {
+  border: 3px solid #cd007d;
+  background: #cd007d;
+}

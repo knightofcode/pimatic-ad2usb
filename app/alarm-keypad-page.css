@@ -1,0 +1,42 @@
+#alarm-keypad div.alarm-keypad {
+  margin: 0 auto;
+  display: table;
+}
+#alarm-keypad div.alarm-keypad div.alarm-keypad-display {
+  text-align: center;
+  padding: 10px;
+  margin: 5px;
+  margin-left: 8px;
+  margin-bottom: 10px;
+  border: 3px solid black;
+  font-family: Menlo, monospace;
+}
+#alarm-keypad div.alarm-keypad div.alarm-keypad-display.backlight-disabled {
+  background-color:#e0ffe0;
+}
+#alarm-keypad div.alarm-keypad div.alarm-keypad-display.backlight-enabled {
+  background-color:#99ff99;
+}
+#alarm-keypad div.alarm-keypad .alarm-keypad-message {
+}
+#alarm-keypad div.alarm-keypad div.buttons {
+  float: right;
+  max-width: 100%;
+  margin: 0;
+  overflow: hidden;
+  margin-top: -4px;
+  margin-bottom: -4px;
+  text-align: right;
+  white-space: normal;
+}
+#alarm-keypad div.alarm-keypad div.buttons a {
+  margin: 0;
+  margin-left: 4px;
+  margin-top: 1px;
+  margin-bottom: 1px;
+}
+#alarm-keypad div.alarm-keypad div.buttons.ui-grid-c .alarm-keypad-button {
+  width: 38px;
+  line-height: 2;
+  font-size: 9pt;
+}
