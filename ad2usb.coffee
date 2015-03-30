@@ -88,7 +88,7 @@ module.exports = (env) ->
       state:
         description: 'alarm arming status'
         type: 'string'
-        enum: ['disarmed', 'armed away', 'armed stay']
+        enum: ['ready', 'disarmed', 'armed away', 'armed stay']
 
     actions:
       away:
